@@ -6,7 +6,7 @@ using std::endl;
 using std::string;
 
 bool hnefatafl();
-void CapturaGuardianes(char**,bool);
+void CapturaGuardianes(char**,bool,int,int);
 void imprimir(char**);
 bool termino(char**);
 //funciones usados
@@ -22,10 +22,10 @@ int main(){
 		if(opcm==1){
 			if(hnefatafl()){//Validar quien gano
 				for(int i=0;i<10;i++)
-					cout<<"Ganaron los suecos!"<<endl;
+					cout<<"Ganaron los moscovitas!"<<endl;
 			}else{
 				for(int i=0;i<10;i++)
-                                        cout<<"Ganaron los moscovitas!"<<endl;		
+                                        cout<<"Ganaron los suecos!"<<endl;		
 			}
 		}
 	}	
@@ -87,8 +87,11 @@ bool hnefatafl(){//retornara verdadero si ganan los suecos y falso si ganan los 
 		if((filficha>=0&&filficha<=10)&&(colficha>=0&&colficha<=10)&&(fillugar>=0&&fillugar<=10)&&(collugar>=0&&collugar<=10)){
 			if((filficha==fillugar||collugar==colficha)&&(filficha==fillugar&&colficha==collugar)==false){
 				//se valida el movimiento de la ficha y que el lugar y la posicion de la ficha no sea igual
-				if((tablero[filficha][colficha]=='#'&&turno==true)
-						||((tablero[filficha][colficha]=='O'||tablero[filficha][colficha]=='W')&&turno==false)){
+				if(((tablero[filficha][colficha]=='#'&&turno==true)
+						||((tablero[filficha][colficha]=='O'||tablero[filficha][colficha]=='W')&&turno==false))
+						&&!((tablero[filficha][colficha]!='W')&&((collugar==10&&fillugar==10)
+								||(collugar==10&&fillugar==0)||(collugar==0&&fillugar==10)
+								||(collugar==0&&fillugar==0)))){
 					if(turno){//TRUE==NEGROS FALSE==BLANCOS
 						//Turno de fichas negras
 						int obstaculos=0;
@@ -104,6 +107,7 @@ bool hnefatafl(){//retornara verdadero si ganan los suecos y falso si ganan los 
 								if(obstaculos==0){
 									tablero[filficha][colficha]='-';
 									tablero[fillugar][collugar]='#';
+									CapturaGuardianes(tablero,turno,fillugar,collugar);
 									turno=!(turno);
 								}else{
 									cout<<"Hay fichas en el camino, no se completo el movimiento"<<endl;
@@ -118,6 +122,7 @@ bool hnefatafl(){//retornara verdadero si ganan los suecos y falso si ganan los 
 								if(obstaculos==0){
                                                                         tablero[filficha][colficha]='-';
                                                                         tablero[fillugar][collugar]='#';
+									CapturaGuardianes(tablero,turno,fillugar,collugar);
                                                                         turno=!(turno);
                                                                 }else{
                                                                         cout<<"Hay fichas en el camino, no se completo el movimiento"<<endl;
@@ -135,6 +140,7 @@ bool hnefatafl(){//retornara verdadero si ganan los suecos y falso si ganan los 
                                                                 if(obstaculos==0){
                                                                         tablero[filficha][colficha]='-';
                                                                         tablero[fillugar][collugar]='#';
+									CapturaGuardianes(tablero,turno,fillugar,collugar);
                                                                         turno=!(turno);
                                                                 }else{
                                                                         cout<<"Hay fichas en el camino, no se completo el movimiento"<<endl;
@@ -149,6 +155,7 @@ bool hnefatafl(){//retornara verdadero si ganan los suecos y falso si ganan los 
                                                                 if(obstaculos==0){
                                                                         tablero[filficha][colficha]='-';
                                                                         tablero[fillugar][collugar]='#';
+									CapturaGuardianes(tablero,turno,fillugar,collugar);
                                                                         turno=!(turno);
                                                                 }else{
                                                                         cout<<"Hay fichas en el camino, no se completo el movimiento"<<endl;
@@ -170,8 +177,9 @@ bool hnefatafl(){//retornara verdadero si ganan los suecos y falso si ganan los 
 									}
 								}
 								if(obstaculos==0){
+									tablero[fillugar][collugar]=tablero[filficha][colficha];
 									tablero[filficha][colficha]='-';
-									tablero[fillugar][collugar]='O';
+									CapturaGuardianes(tablero,turno,fillugar,collugar);
 									turno=!(turno);
 								}else{
 									cout<<"Hay fichas en el camino, no se completo el movimiento"<<endl;
@@ -184,8 +192,9 @@ bool hnefatafl(){//retornara verdadero si ganan los suecos y falso si ganan los 
                                                                         }
                                                                 }
 								if(obstaculos==0){
+                                                                        tablero[fillugar][collugar]=tablero[filficha][colficha];
                                                                         tablero[filficha][colficha]='-';
-                                                                        tablero[fillugar][collugar]='O';
+									CapturaGuardianes(tablero,turno,fillugar,collugar);
                                                                         turno=!(turno);
                                                                 }else{
                                                                         cout<<"Hay fichas en el camino, no se completo el movimiento"<<endl;
@@ -201,8 +210,9 @@ bool hnefatafl(){//retornara verdadero si ganan los suecos y falso si ganan los 
                                                                         }
                                                                 }
                                                                 if(obstaculos==0){
+                                                                        tablero[fillugar][collugar]=tablero[filficha][colficha];
                                                                         tablero[filficha][colficha]='-';
-                                                                        tablero[fillugar][collugar]='O';
+									CapturaGuardianes(tablero,turno,fillugar,collugar);
                                                                         turno=!(turno);
                                                                 }else{
                                                                         cout<<"Hay fichas en el camino, no se completo el movimiento"<<endl;
@@ -215,8 +225,9 @@ bool hnefatafl(){//retornara verdadero si ganan los suecos y falso si ganan los 
                                                                         }
                                                                 }
                                                                 if(obstaculos==0){
+                                                                        tablero[fillugar][collugar]=tablero[filficha][colficha];
                                                                         tablero[filficha][colficha]='-';
-                                                                        tablero[fillugar][collugar]='O';
+									CapturaGuardianes(tablero,turno,fillugar,collugar);
                                                                         turno=!(turno);
                                                                 }else{
                                                                         cout<<"Hay fichas en el camino, no se completo el movimiento"<<endl;
@@ -228,15 +239,17 @@ bool hnefatafl(){//retornara verdadero si ganan los suecos y falso si ganan los 
 						imprimir(tablero);
 					}//fin if
 				}else{
-					cout<<"La ficha seleccionada no existe o no es de su color."<<endl;
+					cout<<"La ficha seleccionada no existe o no es de su color."<<endl
+						<<"Solo la ficha del Rey puede llegar a las esquinas"<<endl;
 				}//fin if
 			}else{
 				cout<<"Solo puede moverse en linea recta."<<endl;
 			}//fin if
 		}else{
-			cout<<"Aqui!"<<filficha<<" "<<colficha<<" "<<fillugar<<" "<<collugar<<endl;
+			/*cout<<"Aqui!"<<filficha<<" "<<colficha<<" "<<fillugar<<" "<<collugar<<endl;
 			cout<<"lugar[3]:"<<lugar[3]<<endl;
-			cout<<"ficha[3]:"<<ficha[3]<<endl;
+			cout<<"ficha[3]:"<<ficha[3]<<endl;*/
+			cout<<"Las posiciones estan ingresadas de manera incorrecta!"<<endl;
 		}//fin if
 	}//fin while
 
@@ -244,7 +257,7 @@ bool hnefatafl(){//retornara verdadero si ganan los suecos y falso si ganan los 
                 delete[] tablero[i];
         }
 	delete[] tablero;
-	return false;
+	return !turno;
 }
 
 bool termino(char** tablero){//verifica si el juego ha terminado
@@ -274,8 +287,82 @@ void imprimir(char** tablero){
 	cout<<endl;
 }
 
-void CapturaGuardianes(char** tablero,bool turno){
+void CapturaGuardianes(char** tablero,bool turno, int fillugar, int collugar){
 	//se verifica el tablero para ver si se deben eliminar peones con 
-	//un bool turno
-	
+	//un bool turno y sus posiciones, para que no exista suicidio
+	if(turno){//es ficha negra
+		if((fillugar-1)>0){
+			if(tablero[fillugar-1][collugar]=='O'&&tablero[fillugar-2][collugar]=='#'){
+				tablero[fillugar-1][collugar]='-';
+			}//fin if
+			if(tablero[fillugar-1][collugar]=='W'&&tablero[fillugar-2][collugar]=='#'){
+				if((collugar-1)>0&&(collugar+1)<10){
+					if(tablero[fillugar-1][collugar-1]=='#'&&tablero[fillugar-1][collugar+1]=='#'){
+						tablero[fillugar-1][collugar]='-';
+					}
+				}
+			}
+		}//fin if
+	       	if((fillugar+1)<10){
+			if((tablero[fillugar+1][collugar]=='O'||tablero[fillugar+1][collugar]=='W')&&tablero[fillugar+2][collugar]=='#'){
+                                tablero[fillugar+1][collugar]='-';
+                        }//fin if
+			if(tablero[fillugar+1][collugar]=='W'&&tablero[fillugar+2][collugar]=='#'){
+                                if((collugar-1)>0&&(collugar+1)<10){
+                                        if(tablero[fillugar+1][collugar-1]=='#'&&tablero[fillugar+1][collugar+1]=='#'){
+                                                tablero[fillugar+1][collugar]='-';
+                                        }
+                                }
+                        }
+		}//fin if
+		if((collugar-1)>0){
+			if((tablero[fillugar][collugar-1]=='O'||tablero[fillugar][collugar-1]=='W')&&tablero[fillugar][collugar-2]=='#'){
+                                tablero[fillugar][collugar-1]='-';
+                        }//fin if
+			if(tablero[fillugar][collugar-1]=='W'&&tablero[fillugar][collugar-2]=='#'){
+                                if((fillugar-1)>0&&(fillugar+1)<10){
+                                        if(tablero[fillugar-1][collugar-1]=='#'&&tablero[fillugar+1][collugar-1]=='#'){
+                                                tablero[fillugar-1][collugar]='-';
+                                        }
+                                }
+                        }
+
+		}//fin if
+		if((collugar+1)<10){
+			if((tablero[fillugar][collugar+1]=='O'||tablero[fillugar][collugar+1]=='W')&&tablero[fillugar][collugar+2]=='#'){
+                                tablero[fillugar][collugar+1]='-';
+                        }//fin if
+			if(tablero[fillugar][collugar+1]=='W'&&tablero[fillugar][collugar+2]=='#'){
+                                if((fillugar-1)>0&&(fillugar+1)<10){
+                                        if(tablero[fillugar-1][collugar+1]=='#'&&tablero[fillugar+1][collugar+1]=='#'){
+                                                tablero[fillugar-1][collugar]='-';
+                                        }
+                                }
+                        }
+
+		}//fin if
+	}else{//es ficha blanco
+		if(tablero[fillugar][collugar]!='W'){
+			if((fillugar-1)>0){
+	                        if(tablero[fillugar-1][collugar]=='#'&&tablero[fillugar-2][collugar]=='O'){
+        	                        tablero[fillugar-1][collugar]='-';
+                	        }//fin if
+	                }//fin if
+        	        if((fillugar+1)<10){
+                	        if(tablero[fillugar+1][collugar]=='#'&&tablero[fillugar+2][collugar]=='O'){
+                        	        tablero[fillugar+1][collugar]='-';
+	                        }//fin if
+        	        }//fin if
+	                if((collugar-1)>0){
+        	                if(tablero[fillugar][collugar-1]=='#'&&tablero[fillugar][collugar-2]=='O'){
+                	                tablero[fillugar][collugar-1]='-';
+	                        }//fin if
+        	        }//fin if
+                	if((collugar+1)<10){
+	                        if(tablero[fillugar][collugar+1]=='#'&&tablero[fillugar][collugar+2]=='O'){
+        	                        tablero[fillugar][collugar+1]='-';
+                	        }//fin if
+	                }//fin if
+		}//fin if
+	}//fin if
 }
